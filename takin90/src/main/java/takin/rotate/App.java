@@ -2,24 +2,30 @@ package takin.rotate;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
+
 import takin.rotate.models.EventCTRL;
 import takin.rotate.models.ImageInfo;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +46,27 @@ public class App extends Application {
     
     @Override
     public void start(@SuppressWarnings("exports") Stage stage) throws IOException {
+        
+        Label imageInfoLabel = new Label("Informations sur l'image:");
+        try {
+            File csvFile = new File("image_info.csv");
+            Scanner scanner = new Scanner(csvFile);
+            String line = scanner.nextLine();
+            String[] parts = line.split(",");
+
+            String imagePath = parts[0];
+            int rows = Integer.parseInt(parts[1]);
+            int columns = Integer.parseInt(parts[2]);
+            ligne=rows;
+            column=columns;
+            ListBtns = new ImageInfo[ligne][column];
+            imageInfos = new ImageInfo[ligne][column];
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
        stage.setTitle("Takin rotation");
         GridPane gridPane = new GridPane();
         initiateTable(imageInfos, ListBtns);
